@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8"> 
+	<script src ="../safile.js"></script>
+	
+	<script>
+	window.onload = function() {
+	
+	
+		function log(what){
+			console.log(what);
+			document.getElementById("test").innerText = document.getElementById("test").innerText + "\n"+ what;
+		}
+	
+
+		function test(filename, special_char_array, escapechar){
+		
+			//TEST A: FWD ENCODING
+			filename_fwd = safile(filename, special_char_array, 'fwd', escapechar);
+			
+			let msg_fwd = '"' + filename + '" becomes: "' + filename_fwd + '"';	
+			log(msg_fwd);
+			
+			//TEST B: REW DECODING
+			filename_rew = safile(filename_fwd, special_char_array, 'rew', escapechar);
+			
+			let msgArew = '"' + filename_fwd + '" comes back into: "' + filename_rew + '"';
+			log( msgArew);		 
+		}
+	
+		log( "EXAMPLE WITH UNWANTED SPECIAL CHARS IN NTFS FILENAMES:\n");
+	
+	
+		test('a%%b%c\d;e:<|>?', ['\\', ';', '<', '|', '?', '>', ':']);
+	
+ 
+		
+		log( "\n\n\n\nEXAMPLE WITH UNICODE CHARS (generally accepted in common recent filesystems):\n");
+		
+		test('a%%b%c🌛︎🌝︎☾🌕︎☽︎🌚︎★', ['🌛︎', '🌝', '☾', '🌕', '☽', '🌚︎', '★']);
+		
+ 
+
+		log( "\n\n\n\nEXAMPLE SPECIFYING THE ESCAPE CHAR (in such case the underscore):\n");
+		test('a%%b%c\d;e:<|>?', ['\\', ';', '<', '|', '?', '>', ':'], '_');
+		 
+		
+				
+	}
+	
+	</script>
+	
+
+	</head>
+	<body>  
+		<main>
+			<pre id="test">
+		
+			</pre>
+		</main>
+	</body>  
+</html>
